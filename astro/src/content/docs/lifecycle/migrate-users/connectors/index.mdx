@@ -1,11 +1,6 @@
 ---
-title: Connectors Overview
+title: Connectors
 description: FusionAuth Connectors allow you to authenticate users against external data sources and optionally migrate them.
-navcategory: premium
-section: lifecycle
-subcategory: migrate users
-tertcategory: connectors
-navOrder: 0
 ---
 import Aside from 'src/components/Aside.astro';
 import Breadcrumb from 'src/components/Breadcrumb.astro';
@@ -16,10 +11,8 @@ import { YouTube } from '@astro-community/astro-embed-youtube';
 
 <YouTube id="ks-ppMH6WXw" />
 
-## Overview
-
 <Aside type="version">
-Available since 1.18.0
+Available since `1.18.0`
 </Aside>
 
 Connectors allow you to connect other sources of user data to your FusionAuth instance. Once the connection is created, you may either:
@@ -37,7 +30,7 @@ If you're looking for a Connector not listed here, review the open feature reque
 
 Find Connectors in the administrative user interface by navigating to <Breadcrumb>Settings -> Connectors</Breadcrumb> or use the [Connectors](/docs/apis/connectors/) APIs.
 
-<img src="/img/docs/lifecycle/migrate-users/connectors/connectors-screen.png" alt="Choose what type of Connector to create." width="1200" role="shadowed" />
+![Choose what type of Connector to create.](/img/docs/lifecycle/migrate-users/connectors/connectors-screen.png)
 
 ## Data Flow
 
@@ -129,7 +122,7 @@ Connectors can be enabled on a per tenant basis. This is done with a Connector p
 
 In the following screenshot you will see that we have enabled two custom Connectors for the Default tenant. The default Connector is present as well. 
 
-<img src="/img/docs/get-started/core-concepts/tenant-connector-tab.png" alt="The Tenant Connector policy configuration tab." width="1200" role="shadowed" />
+![The Tenant Connector policy configuration tab.](/img/docs/get-started/core-concepts/tenant-connector-tab.png)
 
 The order of operations matters for Connectors. The Connector policy rules are applied in order when a user authenticates for the first time. 
 

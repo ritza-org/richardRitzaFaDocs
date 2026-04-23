@@ -1,9 +1,6 @@
 ---
 title: Troubleshooting
 description: Learn how to troubleshoot issues that might arise while install or running FusionAuth.
-navcategory: admin
-section: operate
-subcategory: troubleshooting
 ---
 import AccountManagementTroubleshooting from 'src/content/docs/lifecycle/manage-users/account-management/_account-management-troubleshooting.mdx';
 import Aside from 'src/components/Aside.astro';
@@ -26,8 +23,6 @@ import TroubleshootingUninstallUpgradeReinstallRpm from 'src/content/docs/_share
 import { YouTube } from '@astro-community/astro-embed-youtube';
 import Breadcrumb from 'src/components/Breadcrumb.astro';
 
-## Overview
-
 If any problems arise or if you are unable to access FusionAuth, consult the FusionAuth log files. In most cases, API errors will be written out to the `fusionauth-app.log` file, but for some installations such as Docker, the errors will be sent to `stdout`.
 
 If you need further assistance, please ask a question in the <a href="/community/forum/" target="_blank">FusionAuth forum</a> or open an issue on <a href="https://github.com/FusionAuth/fusionauth-issues/issues/new/choose" target="_blank">GitHub</a> if you have found a bug (please provide replication steps).
@@ -42,9 +37,9 @@ The system logs may be reviewed in the FusionAuth admin UI by navigating to <Bre
 
 The system log UI organizes and renders the most recent 64KB of all logs for all nodes in the deployment. If you need the entire log, use the download action in the upper-right hand corner of the UI to download a zip of all logs.
 
-<img src="/img/docs/operate/troubleshooting/system-logs-single-node.png" alt="System Logs - Single Node" width="1200" />
+![System Logs - Single Node](/img/docs/operate/troubleshooting/system-logs-single-node.png)
 
-<img src="/img/docs/operate/troubleshooting/system-logs-multiple-nodes.png" alt="System Logs - Multiple Nodes" width="1200" />
+![System Logs - Multiple Nodes](/img/docs/operate/troubleshooting/system-logs-multiple-nodes.png)
 
 #### System Logs in FusionAuth Cloud
 
@@ -104,7 +99,7 @@ Many features have additional debugging that can be enabled via the administrati
 
 If you are having issues with certain functionality, look for a <InlineField>Debug enabled</InlineField> checkbox in the user interface. If present, set it to true.
 
-<img src="/img/docs/operate/troubleshooting/generic-connector-debug-enabled.png" alt="Enabling debugging for a generic connector." width="1200" role="bottom-cropped" />
+![Enabling debugging for a generic connector.](/img/docs/operate/troubleshooting/generic-connector-debug-enabled.png)
 
 The additional debugging information will be written to the [Event Log](#event-log). You can find in the administrative user interface by navigating to <Breadcrumb>System -> Event Log</Breadcrumb>.
 
@@ -343,7 +338,7 @@ It is not available in FusionAuth Cloud.
 
 You can configure Elasticsearch to ignore fields that don't match their expected data type. This is done with the [`ignore_malformed` parameter](https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ignore-malformed.html).
 You can apply this to the FusionAuth Elasticsearch indices.
-Whenever [you reindex](/docs/lifecycle/manage-users/search/search#reindexing-elasticsearch), this setting will be lost, so ensure you can reapply it, via a post reindex build step.
+Whenever [you reindex](/docs/lifecycle/manage-users/search#reindexing-elasticsearch), this setting will be lost, so ensure you can reapply it, via a post reindex build step.
 There's an [open issue](https://github.com/FusionAuth/fusionauth-issues/issues/1639) to expose this configuration from within FusionAuth.
 
 When fields are mismatched, you won't be able to search on the ones that have been ignored.
