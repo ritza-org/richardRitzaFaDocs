@@ -70,12 +70,18 @@ const markdownifiedTitle = remark.parseInline(node.title);
       {childNodes.map(child => <Astro.self node={child} />)}
     </div>
   </details>
-) : (
-  <a 
-    href={node.href} 
+) : node.href ? (
+  <a
+    href={node.href}
     aria-current={isCurrent ? "page" : undefined}
     class={`block pr-2 pl-4 py-0.5 -indent-2 text-sm rounded-md transition-colors w-full whitespace-normal break-words ${stateClasses} hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100`}
     set:html={markdownifiedTitle}
   >
   </a>
+) : (
+  <span
+    class={`block pr-2 pl-4 py-0.5 -indent-2 text-sm rounded-md w-full whitespace-normal break-words cursor-default ${stateClasses}`}
+    set:html={markdownifiedTitle}
+  >
+  </span>
 )}
