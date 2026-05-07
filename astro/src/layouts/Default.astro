@@ -1,17 +1,16 @@
 ---
 import '../css/style.css';
 import Head from '../components/Head.astro';
-import Header from '../components/Header.astro';
 import Navigation from '../components/Navigation.astro';
 import GitHubEdit from '../components/GitHubEdit.astro';
 import Search from '../components/search/Search.astro';
 import TOC from '../components/TOC.astro';
-import Article from './Article.astro';
-import ArticleNav from '../components/nav/ArticleNav.astro';
-import Icon from '../components/icon/Icon.astro';
 import { specialCaps } from '../tools/string';
 import IndexableBody from '../components/search/IndexableBody.astro';
 import { Marked } from "marked";
+import Kapa from "src/components/Kapa.astro";
+import { Icon } from "astro-iconset/components";
+import CodeCopyButton from "src/components/CodeCopyButton.astro";
 
 interface Props {
   author?: string;
@@ -33,6 +32,7 @@ interface Props {
   breadcrumbs?: any[];
   maxTocDepth?: number;
   noBreadcrumb: boolean;
+  isIndexPage?: boolean;
 }
 
 let {
@@ -56,6 +56,7 @@ let {
   breadcrumbs = [],
   searchFilters = {},
   maxTocDepth,
+  isIndexPage = false,
 }: Props = Astro.props;
 
 author = frontmatter.author ? frontmatter.author : author;
@@ -111,7 +112,7 @@ const mainStyles = [
 const sideNavStyles = [
   "lg:bg-opacity-0 hidden dark:bg-slate-900 bg-white absolute top-[110px] py-4 w-64 -left-0 z-10",
   // spacing
-  "lg:block lg:max-w-[270px] lg:w-full lg:pr-4 lg:mr-6 lg:py-0 lg:sticky lg:top-24 lg:self-start overflow-y-auto lg:max-h-[calc(100vh-100px)]"
+  "lg:block lg:max-w-[270px] lg:w-full lg:pr-4 lg:mr-6 lg:py-0 lg:sticky lg:top-[calc(--spacing(24)+1px)] lg:self-start overflow-y-auto lg:max-h-[calc(100vh-100px)]"
 ];
 
 const tocStyles = [
@@ -131,27 +132,72 @@ const cleanedHtmlTitle = htmlTitle
   .trim();
 ---
 
-<!DOCTYPE html>
+<!DOCTYPE html transition:animate={fade({ duration: "0.1s" })}>
 <html class="antialiased min-h-full" lang="en">
-<Head title=`${cleanedHtmlTitle} | FusionAuth Docs` description={description} canonicalUrl={frontmatter.canonicalUrl} {openGraphImage} {searchFilters} />
+<Head title=`${cleanedHtmlTitle} | FusionAuth Docs` description={description} canonicalUrl={frontmatter.canonicalUrl} {isIndexPage} {openGraphImage} {searchFilters} />
 <IndexableBody {excludeFromSearchIndex}>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      // check for mermaid diagrams on page
+      const blocks = document.querySelectorAll("pre code.language-mermaid");
+      if (blocks.length === 0) return; // If no diagrams, stop here. Don't load Mermaid!
+  
+      // import Mermaid only when needed
+      const { default: mermaid } = await import("mermaid");
+      
+      mermaid.initialize({ startOnLoad: false, theme: 'default' });
+      
+      blocks.forEach((block) => {
+        const parent = block.parentElement;
+        const mermaidDiv = document.createElement("div");
+        mermaidDiv.className = "mermaid";
+        mermaidDiv.textContent = block.textContent;
+        parent.replaceWith(mermaidDiv);
+      });
+  
+      await mermaid.run({
+        querySelector: '.mermaid',
+      });
+    });
+  </script>
   <slot name="nav"/>
   <main class:list={mainStyles}>
   <!-- Left sidebar -->
   <div id="side-nav" class:list={sideNavStyles}>
+    <script is:inline>
+      // restore the scroll position when a new page loads
+      document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.getElementById('side-nav');
+        if (sidebar) {
+          const savedPos = sessionStorage.getItem('sidebarScrollPos');
+          if (savedPos !== null) {
+            sidebar.scrollTop = parseInt(savedPos, 10);
+          }
+        }
+      });
+
+      // save the scroll position in session storage right before leaving the current page
+      window.addEventListener('beforeunload', () => {
+        const sidebar = document.getElementById('side-nav');
+        if (sidebar) {
+          sessionStorage.setItem('sidebarScrollPos', sidebar.scrollTop.toString());
+        }
+      });
+    </script>
     <!-- Relative container for the sticky search -->
     <div class="relative">
       <!-- Mobile close button -->
-      <button type="button" class="absolute ml-6 right-1 top-0 lg:hidden" data-widget="visibility-button" data-element="side-nav">
-        <i class="fa-regular fa-x text-lg"></i>
+      <button type="button" class="absolute ml-6 right-1 top-0 lg:hidden" data-widget="visibility-button" data-element="side-nav" aria-
+label="Close Menu">
+        <Icon name="fa7-solid:x" class="h-6" />
       </button>
 
         <!-- Search button -->
         <div class="bg-white hidden pb-1 pr-2 pt-0 sticky mt-0 top-0 self-start z-10 dark:bg-slate-900 lg:block">
-          <button type="button" class="flex items-center pl-2 pr-3 py-1.5 border border-slate-900/10 rounded-md shadow-sm text-slate-400 text-sm w-full dark:bg-slate-800 dark:highlight-white/5 dark:hover:bg-slate-700 dark:hover:border-slate-500 hover:border-slate-300" data-widget="search-button">
-            <i class="fa-light fa-magnifying-glass mr-3"></i>
+          <button type="button" class="flex items-center pl-2 pr-3 py-1.5 border border-slate-900/10 rounded-md shadow-sm text-slate-400 text-sm w-full dark:bg-slate-800 dark:highlight-white/5 dark:hover:bg-slate-700 dark:hover:border-slate-500 hover:border-slate-300" data-widget="search-button" aria-label="Search">
+            <Icon name="fa7-solid:search" class="mr-3 h-lh" size={20} />
             <span>Search...</span>
-            <span class="font-semibold ml-auto pl-3 text-xs" data-widget="search-key-hint"></span>
+            <span class="font-semibold ml-auto pl-3 text-xs" data-widget="search-key-hint">⌘/Alt+K</span>
           </button>
         </div>
 
@@ -214,6 +260,7 @@ const cleanedHtmlTitle = htmlTitle
       </aside>
     }
   </main>
-  <Search/>
+  <Kapa />
+  <CodeCopyButton />
 </IndexableBody>
 </html>
