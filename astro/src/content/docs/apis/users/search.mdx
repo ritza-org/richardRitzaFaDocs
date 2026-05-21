@@ -38,24 +38,7 @@ Available Since Version 1.16.0
 
 <API method="GET" uri="/api/user/search?queryString={queryString}&sortFields[0].name={name}&sortFields[0].order={order}" authentication={["api-key"]} title="Search for Users by a query string and sort the response"/>
 
-<CodeExample
-  curl={`curl -G \\
-  "https://your-fusionauth-host/api/user/search" \\
-  -H "Authorization: YOUR_API_KEY" \\
-  --data-urlencode "queryString=YOUR_QUERY_STRING"`}
-  python={`import requests
-
-headers = {
-    "Authorization": "YOUR_API_KEY",
-}
-
-response = requests.get(
-    "https://your-fusionauth-host/api/user/search",
-    headers=headers,
-    params={"queryString": "YOUR_QUERY_STRING"},
-)
-print(response.json())`}
-/>
+<CodeExample method="GET" uri="/api/user/search?queryString=YOUR_QUERY_STRING" />
 
 ### Request Parameters
 
@@ -67,31 +50,7 @@ print(response.json())`}
 
 <XFusionauthTenantIdHeaderScopedOperation />
 
-<CodeExample
-  curl={`curl -X POST \\
-  https://your-fusionauth-host/api/user/search \\
-  -H "Authorization: YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"search": {"queryString": "example@fusionauth.io"}}'`}
-  python={`import requests
-
-headers = {
-    "Authorization": "YOUR_API_KEY",
-}
-
-body = {
-    "search": {
-        "queryString": "example@fusionauth.io",
-    }
-}
-
-response = requests.post(
-    "https://your-fusionauth-host/api/user/search",
-    headers=headers,
-    json=body,
-)
-print(response.json())`}
-/>
+<CodeExample method="POST" uri="/api/user/search" />
 
 ### Request Body
 
@@ -115,24 +74,7 @@ The Elasticsearch engine has [advanced querying capabilities and better performa
 
 <API method="GET" uri="/api/user/search?nextResults={nextResults}" authentication={["api-key"]} title="Search for Users with a nextResults token"/>
 
-<CodeExample
-  curl={`curl -G \\
-  "https://your-fusionauth-host/api/user/search" \\
-  -H "Authorization: YOUR_API_KEY" \\
-  --data-urlencode "queryString=YOUR_QUERY_STRING"`}
-  python={`import requests
-
-headers = {
-    "Authorization": "YOUR_API_KEY",
-}
-
-response = requests.get(
-    "https://your-fusionauth-host/api/user/search",
-    headers=headers,
-    params={"queryString": "YOUR_QUERY_STRING"},
-)
-print(response.json())`}
-/>
+<CodeExample method="GET" uri="/api/user/search?queryString=YOUR_QUERY_STRING" />
 
 ### Request Parameters
 
@@ -144,31 +86,7 @@ print(response.json())`}
 
 <XFusionauthTenantIdHeaderScopedOperation />
 
-<CodeExample
-  curl={`curl -X POST \\
-  https://your-fusionauth-host/api/user/search \\
-  -H "Authorization: YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"search": {"queryString": "example@fusionauth.io"}}'`}
-  python={`import requests
-
-headers = {
-    "Authorization": "YOUR_API_KEY",
-}
-
-body = {
-    "search": {
-        "queryString": "example@fusionauth.io",
-    }
-}
-
-response = requests.post(
-    "https://your-fusionauth-host/api/user/search",
-    headers=headers,
-    json=body,
-)
-print(response.json())`}
-/>
+<CodeExample method="POST" uri="/api/user/search" />
 
 ### Request Body
 
