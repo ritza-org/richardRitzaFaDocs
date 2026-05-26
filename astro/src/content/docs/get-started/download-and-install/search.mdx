@@ -10,7 +10,11 @@ import ElasticsearchRam from 'src/content/docs/_shared/_elasticsearch-ram.mdx';
 import TabItem from 'src/components/TabItem.astro';
 import Tabs from 'src/components/Tabs.astro';
 
-This page explains how to configure simple database search for FusionAuth, or install Elasticsearch or OpenSearch for more powerful features.
+This page explains how to configure simple database search for FusionAuth, or install Elasticsearch or OpenSearch for more powerful features. If you instead want to know how to *use* FA search, please see the following documentation:
+
+- [Manage users](/docs/lifecycle/manage-users/search/)
+- [Search with Elasticsearch](/docs/lifecycle/manage-users/search/user-search-with-elasticsearch#an-introduction-to-the-elasticsearch-search-engine)
+- [User API](/docs/apis/users#search-for-users)
 
 By default, FusionAuth provides a basic database search to find Users or Entities by simple fields like username or email address, including the ability to search by partial strings.
 
@@ -44,9 +48,9 @@ You can see which type of search your FA instance uses by browsing to <Breadcrum
 
 For queries on simple user fields the database search is incredibly fast, as the search runs on indexed database fields. You should definitely choose database search unless you need to run complex searches, or search the `user.data` field.
 
-Switching to Elasticsearch will require more RAM, more CPU (for continuous indexing even if you aren't currently searching), and disk space of about 1.5 to 2 times your user data in the database expanded into the search index. Elasticsearch synchronizes its index with the user database quickly, but gradually. So there might be small intervals when your search results don't represent the current users in the database.
+Switching to Elasticsearch will require more RAM, more CPU (for continuous indexing even if you aren't currently searching), and disk space of about 1.5 to 2 times your user data in the database expanded into the search index. Elasticsearch also takes a little time to synchronize its index with the user database. So there might be small intervals when your search results don't represent the current users in the database.
 
-However, you can switch your search provider type as much as you like. It's as simple as changing your Docker compose file, which is shown in this guide.
+You can switch your search provider type freely and as often as you like. It's as simple as changing your Docker compose file, which is shown in this guide.
 
 ## Download the Package
 
