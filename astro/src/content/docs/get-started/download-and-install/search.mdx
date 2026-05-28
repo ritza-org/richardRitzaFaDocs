@@ -10,23 +10,23 @@ import ElasticsearchRam from 'src/content/docs/_shared/_elasticsearch-ram.mdx';
 
 This page explains how to configure simple database search for FusionAuth, or install Elasticsearch or OpenSearch for more powerful features. If you instead want to know how to *use* FusionAuth search, please see the following documentation:
 
-- [Manage users](/docs/lifecycle/manage-users/search/)
-- [Search with Elasticsearch](/docs/lifecycle/manage-users/search/user-search-with-elasticsearch#an-introduction-to-the-elasticsearch-search-engine)
-- [User API](/docs/apis/users#search-for-users)
+* [Manage users](/docs/lifecycle/manage-users/search/)
+* [Search with Elasticsearch](/docs/lifecycle/manage-users/search/user-search-with-elasticsearch#an-introduction-to-the-elasticsearch-search-engine)
+* [User API](/docs/apis/users#search-for-users)
 
 FusionAuth natively provides a basic database search to find Users or Entities by simple fields like username or email address, including the ability to search by partial words.
 
-![Database search](../../../../../public/img/docs/get-started/download-and-install/search/basicSearch.webp)
+![The FusionAuth admin UI showing the basic database search for users.](/img/docs/get-started/download-and-install/search/basic-search.png)
 
 As well as being used in the FusionAuth web interface, search is also available in the API.
 
 Switching to Elasticsearch or OpenSearch provides features that the database search does not support, like:
 
-- Elasticsearch query strings or JSON queries
-- Searches on custom `user.data` fields
-- Regex, ranges, and complex compound queries
+* Elasticsearch query strings or JSON queries
+* Searches on custom `user.data` fields
+* Regex, ranges, and complex compound queries
 
-![Advanced search](../../../../../public/img/docs/get-started/download-and-install/search/elasticSearch.webp)
+![The FusionAuth admin UI showing the advanced search for users.](/img/docs/get-started/download-and-install/search/elastic-search.png)
 
 <Aside type="note">
 FusionAuth supports Elasticsearch and OpenSearch with the same features. You can choose either brand. This guide uses "Elasticsearch" as a general term for both.
@@ -40,7 +40,7 @@ Switching to Elasticsearch will require more RAM, more CPU (for continuous index
 
 <ElasticsearchRam />
 
-You can switch your search provider freely and as often as you like. It's as simple as changing your Docker compose file, which is shown below.
+You can switch your search provider freely and as often as you like. It's as simple as changing your Docker Compose file, which is shown below.
 
 ## Configuring Database Search
 
@@ -56,34 +56,34 @@ SEARCH_TYPE: database
 
 If you already have an instance of FusionAuth running Elasticsearch, changing the line above and restarting FusionAuth is all you need to do to switch to database search. You can then delete your Elasticsearch instance without affecting FusionAuth.
 
-If you're running FusionAuth directly on your machine without Docker, you can change this environment variable directly on your host machine.
+If you're running FusionAuth directly on your machine without Docker, you can change this environment variable directly on your host machine. See the [fusionauth-app install guide](/docs/get-started/download-and-install/fusionauth-app) for instructions.
 
-## Configuring Elasticsearch
+## Configuring Elasticsearch or OpenSearch
 
 Switching from database search to Elasticsearch reverses the process above. Here is an example [Docker Compose file that uses OpenSearch](https://github.com/ritza-co/fusionauth-example-docker-compose/blob/main/kickstart/docker-compose.yml).
 
-Notice that the `environment` variables are now:
+The FusionAuth environment variables are the same regardless of which engine you choose. Note that `SEARCH_TYPE` uses the value `elasticsearch` for both Elasticsearch and OpenSearch, as FusionAuth uses a single setting for both engines:
 
 ```yaml
 SEARCH_TYPE: elasticsearch
 SEARCH_SERVERS: http://search:9200
 ```
 
-The new setting, `SEARCH_SERVERS`, tells FusionAuth on which URL to call Elasticsearch. The network address here is `search`, which is the name of the Elasticsearch container in the Compose file. Both FusionAuth and Elasticsearch need to be on the same network, which in this file is called `search_net` and is separate from the database network, called `db_net`. You could also use the same network for all components, or your host network.
+The `SEARCH_SERVERS` setting tells FusionAuth on which URL to call Elasticsearch. The network address here is `search`, which is the name of the Elasticsearch container in the Compose file. Both FusionAuth and Elasticsearch need to be on the same network, which in this file is called `search_net` and is separate from the database network, called `db_net`. You could also use the same network for all components, or your host network.
 
 <Aside type="note">
 Elasticsearch does not query the database directly and gets user data only through FusionAuth. However, the data transfer process is [asynchronous since version 1.30.2](https://github.com/FusionAuth/fusionauth-issues/issues/599) and doesn't cause user login delays.
 </Aside>
 
-In addition to the two settings above, you need to have an instance of Elasticsearch running. In this example, OpenSearch is running in Docker on the same machine as FusionAuth, but you can run Elasticsearch anywhere on the network. Please consult the external Elasticsearch documentation to customize your search server.
+In addition to the two settings above, you need to have an Elasticsearch instance running. You can run it in Docker on the same machine as FusionAuth, or anywhere else on the network. If you are not using Docker, refer to the [Elasticsearch installation docs](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/installing-elasticsearch) or the [OpenSearch installation docs](https://docs.opensearch.org/latest/install-and-configure/install-opensearch/index/) for your platform.
 
 After installing Elasticsearch, you must also tell it to index all the data in FusionAuth. Do so by browsing to <Breadcrumb>System -> Reindex</Breadcrumb>.
 
-![Database search](../../../../../public/img/docs/get-started/download-and-install/search/basicSearch.webp)
+![The FusionAuth admin UI showing the Reindex page under System.](/img/docs/get-started/download-and-install/search/reindex.png)
 
 It's an easy mistake to install Elasticsearch and forget to toggle your `SEARCH_TYPE` variable or forget to restart FusionAuth. You can verify which type of search your FusionAuth instance uses by browsing to <Breadcrumb>System -> About</Breadcrumb>.
 
-![About - Search Engine Type](/img/docs/lifecycle/manage-users/search/about-search-engine-type.png)
+![The FusionAuth admin UI showing the About page with the search engine type displayed.](/img/docs/get-started/download-and-install/search/about-search-engine-type.png)
 
 Elasticsearch may be horizontally scaled using Elasticsearch clustering. You can use multiple comma-separated search URLs with FusionAuth, as shown below:
 
@@ -94,3 +94,71 @@ SEARCH_SERVERS: http://search:9200,http://search2:9200
 These URLs must point to multiple Elasticsearch instances in the same cluster. FusionAuth will fail to start if you try to run completely separate Elasticsearch nodes both using FusionAuth.
 
 <ElasticsearchVersion />
+
+## Addendum: Docker Compose Service Configurations
+
+The OpenSearch and Elasticsearch `faSearch` service configurations differ in their image, environment variables, and volume path. Use whichever matches your chosen engine:
+
+```yaml
+# OpenSearch
+faSearch:
+  image: opensearchproject/opensearch:3.6.0
+  container_name: faSearch
+  environment:
+    cluster.name: fusionauth
+    discovery.type: single-node
+    node.name: search
+    plugins.security.disabled: true
+    bootstrap.memory_lock: true
+    OPENSEARCH_JAVA_OPTS: ${OPENSEARCH_JAVA_OPTS}
+    OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
+  healthcheck:
+    interval: 10s
+    retries: 80
+    test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:9200/
+  ulimits:
+    memlock:
+      soft: -1
+      hard: -1
+    nofile:
+      soft: 65536
+      hard: 65536
+  ports:
+    - 9200:9200
+    - 9600:9600
+  volumes:
+    - search_data:/usr/share/opensearch/data
+  networks:
+    - db_net
+```
+
+```yaml
+# Elasticsearch
+faSearch:
+  image: elasticsearch:9.4.1
+  container_name: faSearch
+  environment:
+    cluster.name: fusionauth
+    discovery.type: single-node
+    node.name: search
+    xpack.security.enabled: false
+    bootstrap.memory_lock: true
+    ES_JAVA_OPTS: ${ES_JAVA_OPTS}
+  healthcheck:
+    interval: 10s
+    retries: 80
+    test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:9200/
+  ulimits:
+    memlock:
+      soft: -1
+      hard: -1
+    nofile:
+      soft: 65536
+      hard: 65536
+  ports:
+    - 9200:9200
+  volumes:
+    - search_data:/usr/share/elasticsearch/data
+  networks:
+    - db_net
+```
