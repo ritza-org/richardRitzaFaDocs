@@ -10,23 +10,23 @@ import ElasticsearchRam from 'src/content/docs/_shared/_elasticsearch-ram.mdx';
 
 This page explains how to configure simple database search for FusionAuth, or install Elasticsearch or OpenSearch for more powerful features. If you instead want to know how to *use* FusionAuth search, please see the following documentation:
 
-- [Manage users](/docs/lifecycle/manage-users/search/)
-- [Search with Elasticsearch](/docs/lifecycle/manage-users/search/user-search-with-elasticsearch#an-introduction-to-the-elasticsearch-search-engine)
-- [User API](/docs/apis/users#search-for-users)
+* [Manage users](/docs/lifecycle/manage-users/search/)
+* [Search with Elasticsearch](/docs/lifecycle/manage-users/search/user-search-with-elasticsearch#an-introduction-to-the-elasticsearch-search-engine)
+* [User API](/docs/apis/users#search-for-users)
 
 FusionAuth natively provides a basic database search to find Users or Entities by simple fields like username or email address, including the ability to search by partial words.
 
-![Database search](../../../../../public/img/docs/get-started/download-and-install/search/basicSearch.webp)
+![The FusionAuth admin UI showing the basic database search for users.](/img/docs/get-started/download-and-install/search/basicSearch.webp)
 
 As well as being used in the FusionAuth web interface, search is also available in the API.
 
 Switching to Elasticsearch or OpenSearch provides features that the database search does not support, like:
 
-- Elasticsearch query strings or JSON queries
-- Searches on custom `user.data` fields
-- Regex, ranges, and complex compound queries
+* Elasticsearch query strings or JSON queries
+* Searches on custom `user.data` fields
+* Regex, ranges, and complex compound queries
 
-![Advanced search](../../../../../public/img/docs/get-started/download-and-install/search/elasticSearch.webp)
+![The FusionAuth admin UI showing the advanced Elasticsearch search for users.](/img/docs/get-started/download-and-install/search/elasticSearch.webp)
 
 <Aside type="note">
 FusionAuth supports Elasticsearch and OpenSearch with the same features. You can choose either brand. This guide uses "Elasticsearch" as a general term for both.
@@ -40,7 +40,7 @@ Switching to Elasticsearch will require more RAM, more CPU (for continuous index
 
 <ElasticsearchRam />
 
-You can switch your search provider freely and as often as you like. It's as simple as changing your Docker compose file, which is shown below.
+You can switch your search provider freely and as often as you like. It's as simple as changing your Docker Compose file, which is shown below.
 
 ## Configuring Database Search
 
@@ -79,11 +79,11 @@ In addition to the two settings above, you need to have an instance of Elasticse
 
 After installing Elasticsearch, you must also tell it to index all the data in FusionAuth. Do so by browsing to <Breadcrumb>System -> Reindex</Breadcrumb>.
 
-![Database search](../../../../../public/img/docs/get-started/download-and-install/search/basicSearch.webp)
+![The FusionAuth admin UI showing the Reindex page under System.](/img/docs/get-started/download-and-install/search/reindex.webp)
 
 It's an easy mistake to install Elasticsearch and forget to toggle your `SEARCH_TYPE` variable or forget to restart FusionAuth. You can verify which type of search your FusionAuth instance uses by browsing to <Breadcrumb>System -> About</Breadcrumb>.
 
-![About - Search Engine Type](/img/docs/lifecycle/manage-users/search/about-search-engine-type.png)
+![The FusionAuth admin UI showing the About page with the search engine type displayed.](/img/docs/lifecycle/manage-users/search/about-search-engine-type.png)
 
 Elasticsearch may be horizontally scaled using Elasticsearch clustering. You can use multiple comma-separated search URLs with FusionAuth, as shown below:
 
