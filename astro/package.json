@@ -10,7 +10,8 @@
 		"preview": "astro preview",
 		"astro": "astro",
 		"lint": "eslint",
-		"lint-pr": "node ../src/scripts/lint-recent-files.mjs"
+		"lint-pr": "node ../src/scripts/lint-recent-files.mjs",
+		"refreshSnippets": "node src/scripts/refreshCodeSnippets.ts"
 	},
 	"dependencies": {
 		"@astro-community/astro-embed-youtube": "^0.5.10",
@@ -32,6 +33,7 @@
 		"astro-iconset": "^0.0.4",
 		"astro-index-pages": "file:src/integrations/astro-index-pages",
 		"astro-link-validator": "github:rodgtr1/astro-link-validator",
+		"bluehawk": "^1.6.0",
 		"codemirror": "^6.0.2",
 		"es-toolkit": "1.46.1",
 		"jsonpath-plus": "^10.4.0",

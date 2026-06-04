@@ -3,3 +3,5 @@ node_modules
 .astro
 *.iws
 .DS_Store
+.cache/
+src/codeSnippets/remote/
