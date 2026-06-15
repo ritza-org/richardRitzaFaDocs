@@ -47,6 +47,10 @@ for LOCAL_REPOSITORY_PATH in astro/src/code-example-repositories/*/; do
 		# Checkout main branch, crash if it doesn't exist
 		git checkout main || exit 1
 
+		# Configure git identity for this temporary repository
+		git config user.email "github-actions[bot]@users.noreply.github.com"
+		git config user.name "github-actions[bot]"
+
 		# Replace the entire working tree with the processed files to mirror exactly
 		git rm -rf .
 		git clean -fdxq
