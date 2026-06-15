@@ -31,11 +31,12 @@ for LOCAL_REPOSITORY_PATH in astro/src/code-example-repositories/*/; do
 		# Process local files with Bluehawk to strip annotations but not generate snippets
 		cd astro
 		LOCAL_CLEANED_REPOSITORY_PATH=$(mktemp -d /tmp/bluehawk-processed.XXXXXX)
+		RELATIVE_LOCAL_REPOSITORY_PATH="${LOCAL_REPOSITORY_PATH#astro/}"
 		npx bluehawk copy --state published \
 			-i "repositoryUrl.txt" \
 			-i "tests" \
 			--output "$LOCAL_CLEANED_REPOSITORY_PATH" \
-			"$LOCAL_REPOSITORY_PATH"
+			"$RELATIVE_LOCAL_REPOSITORY_PATH"
 		cd "$OLDPWD"
 
 		# Clone the remote repository
