@@ -1,5 +1,5 @@
 # FusionAuth Site
-
+test
 Despite the name, this repo only contains the FusionAuth documentation, articles, developer tools, and blog.
 
 This content is hosted in the following subdirectories of `fusionauth.io`:
@@ -28,7 +28,7 @@ Here are the commands you can use with code snippets locally:
 - Start a local server and then browse to localhost:3000 `npm run start`
 
 The following scripts are used in `.github/workflows` when pushing to GitHub:
-- `validate-bluehawk.yml` — Validate the syntax of the annotations in each local code example.
+- `validate-code-snippets.yml` — Validate the syntax of the annotations in each local code example.
 - `test-code-examples.yml` — Runs the unit/integration tests for every local code example. Each repository must have a `tests` folder with a `test.sh` file that runs all its tests and returns a result. The `test.sh` script can be blank to return true with no tests. The tests workflow cannot use Github actions to install programming frameworks and versions, because each code example has different needs. Instead, each example uses Docker to run the tests with its own Docker image.
 - `export-code-examples.yml` — Pushes each local code example to its readonly external repository. Each repository must have a `repositoryUrl.txt` file that says what URL (without the `https://` and ending in `.git`) to export the files. The Bluehawk annotations, `repositoryUrl.txt` file, and `tests` folder are removed before publishing.
 
@@ -41,7 +41,8 @@ The following scripts are used in `.github/workflows` when pushing to GitHub:
 - Add a `tests` folder with a `test.sh` file to run all tests using Docker (use `node:26` if possible to avoid multiple images)
 - Switch the repository annotation format from RemoteCode to Bluehawk in the source files (if you use the entire file you don't need annotations)
 - Use `LocalCode` instead of `RemoteCode` in the accompanying article
-- Test the tests, snippet generation, documentation build, and repository export in repo root
+- Run `npm run validate-code-snippets && npm run generate-code-snippets` to create the code snippets for display in the article
+- Test the tests, snippet generation, and documentation build and create a pull request to the main FusionAuth branch
 
 ## Build
 
