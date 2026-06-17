@@ -1,1 +1,1 @@
-github.com/ritza-org/richardFaQuickstartReact.git
+github.com/FusionAuth/fusionauth-quickstart-react.git
