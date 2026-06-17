@@ -1,5 +1,5 @@
 # FusionAuth Site
-test
+
 Despite the name, this repo only contains the FusionAuth documentation, articles, developer tools, and blog.
 
 This content is hosted in the following subdirectories of `fusionauth.io`:
